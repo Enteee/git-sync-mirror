@@ -9,7 +9,7 @@ HTTP_SSL_VERIFY="${HTTP_SSL_VERIFY:-true}"
 HTTP_SRC_PROXY="${HTTP_SRC_PROXY:-""}"
 HTTP_DST_PROXY="${HTTP_DST_PROXY:-""}"
 
-SLEEP_TIME__S="${SLEEP_TIME__S:-60}"
+SLEEP_TIME="${SLEEP_TIME:-60s}"
 
 git config --global "http.sslVerify" "${HTTP_SSL_VERIFY}"
 git config --global "http.${SRC_REPO}.proxy" "${HTTP_SRC_PROXY}"
@@ -22,5 +22,5 @@ cd "${LOCAL_REPO}"
 while true; do
   git remote update
   git push --mirror "${DST_REPO}"
-  sleep "${SLEEP_TIME__S}"
+  sleep "${SLEEP_TIME}"
 done
