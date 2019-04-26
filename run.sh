@@ -1,14 +1,20 @@
 #!/usr/bin/env sh
 set -euo pipefail
+set -x
 
 # Environment
 SRC_REPO="${SRC_REPO?Missing source repository}"
 DST_REPO="${DST_REPO?Missing destination repository}"
 
-SLEEP_TIME__S="${SLEEP_TIME__S:-60}"
 HTTP_SSL_VERIFY="${HTTP_SSL_VERIFY:-true}"
+HTTP_SRC_PROXY="${HTTP_SRC_PROXY:-""}"
+HTTP_DST_PROXY="${HTTP_DST_PROXY:-""}"
 
-git config --global http.sslVerify "${HTTP_SSL_VERIFY}"
+SLEEP_TIME__S="${SLEEP_TIME__S:-60}"
+
+git config --global "http.sslVerify" "${HTTP_SSL_VERIFY}"
+git config --global "http.${SRC_REPO}.proxy" "${HTTP_SRC_PROXY}"
+git config --global "http.${DST_REPO}.proxy" "${HTTP_DST_PROXY}"
 
 LOCAL_REPO="$(mktemp -d)"
 git clone --mirror "${SRC_REPO}" "${LOCAL_REPO}"
