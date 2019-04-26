@@ -6,4 +6,6 @@ RUN set -exuo pipefail \
   && apk add \
     git
 
+USER 1000:1000
+
 ENTRYPOINT ["/run.sh"]

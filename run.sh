@@ -7,7 +7,7 @@ DST_REPO="${DST_REPO?Missing destination repository}"
 
 SLEEP_TIME__S="${SLEEP_TIME__S:-60}"
 
-LOCAL_REPO="repo"
+LOCAL_REPO="$(mktemp -d)"
 git clone --mirror "${SRC_REPO}" "${LOCAL_REPO}"
 
 cd "${LOCAL_REPO}"
