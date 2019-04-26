@@ -14,7 +14,7 @@ $ docker run \
   --rm \
   --env SRC_REPO=<source> \
   --env DST_REPO=<destination> \
-  --env SLEEP_TIME__S=30 \
+  --env SLEEP_TIME=30s \
   enteee/git-sync-mirror
 ```
 
