@@ -25,7 +25,7 @@ For example replace `<source>` with `https://<github-user>:<github-access-token>
 
 | Variable | Description | Mandatory | Example |
 | -------- | ----------- | :-------: | ------- |
-| `SRC_REPO` | Source repository | Yes | `https://github.com/Enteee/git-sync-mirror.git' |
+| `SRC_REPO` | Source repository | Yes | `https://github.com/Enteee/git-sync-mirror.git` |
 | `DST_REPO` | Destination repository | Yes | `https://github.com/Enteee/git-sync-mirror.git` |
 | `HTTP_SSL_VERIFY` | Enable/Disable certificate cheks | No, default: `true` | `true` or `false` |
 | `HTTP_SRC_PROXY` | HTTP Proxy to use when connecting to `SRC_REPO` | No, default: `` | `http://localhost:8080` |
