@@ -1,6 +1,5 @@
 #!/usr/bin/env sh
 set -euo pipefail
-set -x
 
 # Environment
 SRC_REPO="${SRC_REPO?Missing source repository}"
