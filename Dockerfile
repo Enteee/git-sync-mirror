@@ -1,4 +1,4 @@
-FROM alpine:3.9.3
+FROM enteee/tls-tofu:alpine-latest
 
 COPY run.sh /run.sh
 

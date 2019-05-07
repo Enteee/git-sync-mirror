@@ -11,6 +11,9 @@ HTTP_DST_PROXY="${HTTP_DST_PROXY:-""}"
 
 SLEEP_TIME="${SLEEP_TIME:-60s}"
 
+# Run TLS-TOFU
+/tls-tofu.sh
+
 git config --global "http.sslVerify" "${HTTP_SSL_VERIFY}"
 git config --global "http.${SRC_REPO}.proxy" "${HTTP_SRC_PROXY}"
 git config --global "http.${DST_REPO}.proxy" "${HTTP_DST_PROXY}"

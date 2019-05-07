@@ -31,3 +31,5 @@ For example replace `<source>` with `https://<github-user>:<github-access-token>
 | `HTTP_SRC_PROXY` | HTTP Proxy to use when connecting to `SRC_REPO` | No, default: `` | `http://localhost:8080` |
 | `HTTP_DST_PROXY` | HTTP Proxy to use when connecting to `DST_REPO` | No, default: `` | `http://localhost:8080` |
 | `SLEEP_TIME` | Time to sleep between synchronizations | No, default: `60s` | `30m` |
+
+For TLS-Trust On First Use configuration see: [Enteee/tls-tofu](https://github.com/Enteee/tls-tofu).
