@@ -1,7 +1,5 @@
 FROM enteee/tls-tofu:alpine-latest
 
-COPY run.sh /run.sh
-
 RUN set -exuo pipefail \
   && apk add \
     git \
@@ -10,4 +8,5 @@ RUN set -exuo pipefail \
 
 USER git:git
 
-ENTRYPOINT ["/run.sh"]
+COPY run.sh /run.sh
+CMD ["/run.sh"]
