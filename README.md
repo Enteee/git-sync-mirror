@@ -4,7 +4,7 @@ _A simple synchronization container image for git repositories over HTTPS_
 *Features*:
 * Authentication with https tokens
 * If needed, use a different HTTPS Proxy for source and destination
-* TLS-Trust On First Use: Seamlessly run this container behind a https scanning proxy
+* [TLS-Trust On First Use]: Seamlessly run this container behind a https scanning proxy
 * Skip certificate checks (don't do that)
 * Configure time to sleep between synchronization attempts
 
@@ -32,5 +32,6 @@ For example replace `source` with `https://github-user:github-access-token@githu
 | `HTTP_SRC_PROXY` | HTTP Proxy to use when connecting to `SRC_REPO` | No, default: `` | `http://localhost:8080` |
 | `HTTP_DST_PROXY` | HTTP Proxy to use when connecting to `DST_REPO` | No, default: `` | `http://localhost:8080` |
 | `SLEEP_TIME` | Time to sleep between synchronizations | No, default: `60s` | `30m` |
+| `TLS_TOFU` | Enable / Disable [TLS-Trust On First Use] | No, default: `false` | `true` or `false` |
 
-For TLS-Trust On First Use configuration see: [Enteee/tls-tofu](https://github.com/Enteee/tls-tofu).
+[TLS-Trust On First Use]:https://github.com/Enteee/tls-tofu

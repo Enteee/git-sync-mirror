@@ -1,5 +1,8 @@
 FROM enteee/tls-tofu:alpine-latest
 
+# Disable TLS-TOFU by default
+ENV TLS_TOFU false
+
 RUN set -exuo pipefail \
   && apk add \
     git \
