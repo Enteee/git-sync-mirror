@@ -31,6 +31,7 @@ For example replace `source` with `https://github-user:github-access-token@githu
 | `HTTP_TLS_VERIFY` | Enable/Disable certificate cheks | No, default: `true` | `true` or `false` |
 | `HTTP_SRC_PROXY` | HTTP Proxy to use when connecting to `SRC_REPO` | No, default: `` | `http://localhost:8080` |
 | `HTTP_DST_PROXY` | HTTP Proxy to use when connecting to `DST_REPO` | No, default: `` | `http://localhost:8080` |
+| `ONCE` | If set to `true`, only mirror the repository once | No, default: `false` | `true` or `false` |
 | `SLEEP_TIME` | Time to sleep between synchronizations | No, default: `60s` | `30m` |
 | `TLS_TOFU` | Enable / Disable [TLS-Trust On First Use] | No, default: `false` | `true` or `false` |
 

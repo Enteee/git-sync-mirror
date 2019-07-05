@@ -9,6 +9,7 @@ HTTP_TLS_VERIFY="${HTTP_TLS_VERIFY:-true}"
 HTTP_SRC_PROXY="${HTTP_SRC_PROXY:-""}"
 HTTP_DST_PROXY="${HTTP_DST_PROXY:-""}"
 
+ONCE="${ONCE:-false}"
 SLEEP_TIME="${SLEEP_TIME:-60s}"
 
 DELETE_REFS_PATTERN="${DELETE_REFS_PATTERN:-refs/pull}"
@@ -34,5 +35,7 @@ while true; do
   | git update-ref --stdin
 
   git push --mirror "${DST_REPO}"
+
+  if [ "${ONCE}" = true ]; then exit 0; fi
   sleep "${SLEEP_TIME}"
 done
