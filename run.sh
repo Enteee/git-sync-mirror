@@ -55,11 +55,11 @@ function mirror(){
     if [ "${MIRROR}" = true ]; then
       git push \
         --mirror \
-        "${DST_REPO}"
+        "${dst_repo}"
     else
       git push \
         --all --tags \
-        "${DST_REPO}"
+        "${dst_repo}"
     fi
   )
 }
