@@ -28,7 +28,7 @@ For example replace `source` with `https://github-user:github-access-token@githu
 | -------- | ----------- | :-------: | ------- |
 | `SRC_REPO` | Source repository | Yes | `https://github.com/Enteee/git-sync-mirror.git` |
 | `DST_REPO` | Destination repository | Yes | `https://github.com/Enteee/git-sync-mirror.git` |
-| `VERBOSE` | Print verbose output. **WARNING**: This will also print http tokens! | No, default: `false` | `true` or `false` |
+| `DEBUG` | Print debug output. **WARNING**: This will also print http tokens! | No, default: `false` | `true` or `false` |
 | `MIRROR` | Mirror all refs not just tags and branches | No, default: `true` | `true` or `false` |
 | `TWO_WAY` | Mirror both ways. First SRC to DST, then the other way around | No, default: `false` | `true` or `false` |
 | `HTTP_TLS_VERIFY` | Enable/Disable certificate cheks | No, default: `true` | `true` or `false` |

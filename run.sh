@@ -1,8 +1,8 @@
 #!/usr/bin/env sh
 set -euo pipefail
 
-VERBOSE="${VERBOSE:-false}"
-if [ "${VERBOSE}" = true ]; then set +x; fi
+DEBUG="${DEBUG:-false}"
+if [ "${DEBUG}" = true ]; then set +x; fi
 
 # Environment
 SRC_REPO="${SRC_REPO?Missing source repository}"
