@@ -5,6 +5,9 @@ set -euo pipefail
 SRC_REPO="${SRC_REPO?Missing source repository}"
 DST_REPO="${DST_REPO?Missing destination repository}"
 
+MIRROR="${MIRROR:-true}"
+TWO_WAY="${TWO_WAY:-false}"
+
 HTTP_TLS_VERIFY="${HTTP_TLS_VERIFY:-true}"
 HTTP_SRC_PROXY="${HTTP_SRC_PROXY:-""}"
 HTTP_DST_PROXY="${HTTP_DST_PROXY:-""}"
@@ -12,30 +15,65 @@ HTTP_DST_PROXY="${HTTP_DST_PROXY:-""}"
 ONCE="${ONCE:-false}"
 SLEEP_TIME="${SLEEP_TIME:-60s}"
 
-DELETE_REFS_PATTERN="${DELETE_REFS_PATTERN:-refs/pull}"
+IGNORE_REFS_PATTERN="${IGNORE_REFS_PATTERN:-refs/pull}"
+
+LOCAL_REPO_SRC="$(mktemp -d)"
+LOCAL_REPO_DST="$(mktemp -d)"
 
 git config --global "http.sslVerify" "${HTTP_TLS_VERIFY}"
 git config --global "http.${SRC_REPO}.proxy" "${HTTP_SRC_PROXY}"
 git config --global "http.${DST_REPO}.proxy" "${HTTP_DST_PROXY}"
 
-LOCAL_REPO="$(mktemp -d)"
+function clone_local_repo(){
+  local src_repo="${1}" && shift
+  local local_repo="${1}" && shift
 
-git clone \
-  --mirror \
-  "${SRC_REPO}" "${LOCAL_REPO}"
+  git clone \
+    --mirror \
+    "${src_repo}" "${local_repo}"
+}
 
-cd "${LOCAL_REPO}"
+function mirror(){
+  local local_repo="${1}" && shift
+  local dst_repo="${1}" && shift
+
+  (
+    cd "${local_repo}"
+
+    git remote update
+
+    # delete all hidden github pull request refs
+    git for-each-ref \
+      --format='delete %(refname)' \
+      "${IGNORE_REFS_PATTERN}" \
+    | git update-ref --stdin
+
+    # do mirror
+    if [ "${MIRROR}" = true ]; then
+      git push \
+        --mirror \
+        "${DST_REPO}"
+    else
+      git push \
+        --all --tags \
+        "${DST_REPO}"
+    fi
+  )
+}
+
+clone_local_repo "${SRC_REPO}" "${LOCAL_REPO_SRC}"
+clone_local_repo "${DST_REPO}" "${LOCAL_REPO_DST}"
+
 while true; do
-  git remote update
 
-  # delete all hidden github pull request refs
-  git for-each-ref \
-    --format='delete %(refname)' \
-    "${DELETE_REFS_PATTERN}" \
-  | git update-ref --stdin
+  mirror "${LOCAL_REPO_SRC}" "${DST_REPO}"
+  if [ "${TWO_WAY}" = true ]; then
+    mirror "${LOCAL_REPO_DST}" "${SRC_REPO}"
+  fi
 
-  git push --mirror "${DST_REPO}"
+  if [ "${ONCE}" = true ]; then
+    exit 0
+  fi
 
-  if [ "${ONCE}" = true ]; then exit 0; fi
   sleep "${SLEEP_TIME}"
 done
