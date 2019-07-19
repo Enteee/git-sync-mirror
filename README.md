@@ -3,6 +3,8 @@ _A simple synchronization container image for git repositories over HTTPS_
 
 *Features*:
 * Authentication with https tokens
+* Two way synchronization if needed
+* If needed, supports also only branch / tag sync
 * If needed, use a different HTTPS Proxy for source and destination
 * [TLS-Trust On First Use]: Seamlessly run this container behind a https scanning proxy
 * Skip certificate checks (don't do that)
@@ -20,7 +22,7 @@ $ docker run \
 ```
 
 *Note*: The container is designed for synchronization over `https` with supported authentication using access tokens.
-For example replace `source` with `https://github-user:github-access-token@github.com/Enteee/git-sync-mirror.git`
+For example replace `SRC_REPO_TOKEN` with `github-user:github-access-token`
 
 ## Environment Variables
 
@@ -28,6 +30,8 @@ For example replace `source` with `https://github-user:github-access-token@githu
 | -------- | ----------- | :-------: | ------- |
 | `SRC_REPO` | Source repository | Yes | `https://github.com/Enteee/git-sync-mirror.git` |
 | `DST_REPO` | Destination repository | Yes | `https://github.com/Enteee/git-sync-mirror.git` |
+| `SRC_REPO_TOKEN` | Source repository token | No, default `` | `YourGithubUser:9a91fa018231aaffbbc1231.....` |
+| `DST_REPO_TOKEN` | Destination repository token | No, default `` | `YourGithubUser:9a91fa018231aaffbbc1231.....` |
 | `DEBUG` | Print debug output. **WARNING**: This will also print http tokens! | No, default: `false` | `true` or `false` |
 | `MIRROR` | Mirror all refs not just tags and branches | No, default: `true` | `true` or `false` |
 | `TWO_WAY` | Mirror both ways. First SRC to DST, then the other way around | No, default: `false` | `true` or `false` |
