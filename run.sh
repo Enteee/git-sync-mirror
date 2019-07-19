@@ -53,16 +53,23 @@ function mirror(){
 
     # do mirror
     if [ "${MIRROR}" = true ]; then
+
       git push \
         --mirror \
-        "${dst_repo}"
+        "${dst_repo}" \
+      || [ "${TWO_WAY}" = true ]
+
     else
+
       git push \
         --all \
-        "${dst_repo}"
+        "${dst_repo}" \
+      || [ "${TWO_WAY}" = true ]
       git push \
         --tags \
-        "${dst_repo}"
+        "${dst_repo}" \
+      || [ "${TWO_WAY}" = true ]
+
     fi
   )
 }
