@@ -2,7 +2,7 @@
 set -euo pipefail
 
 DEBUG="${DEBUG:-false}"
-if [ "${DEBUG}" = true ]; then set +x; fi
+if [ "${DEBUG}" = true ]; then set -x; fi
 
 # Environment
 SRC_REPO="${SRC_REPO?Missing source repository}"
