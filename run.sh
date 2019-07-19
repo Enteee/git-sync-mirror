@@ -58,7 +58,10 @@ function mirror(){
         "${dst_repo}"
     else
       git push \
-        --all --tags \
+        --all \
+        "${dst_repo}"
+      git push \
+        --tags \
         "${dst_repo}"
     fi
   )
