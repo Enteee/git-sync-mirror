@@ -1,4 +1,4 @@
-#!/usr/bin/env sh
+#!/usr/bin/env bash
 set -euo pipefail
 
 #
@@ -90,11 +90,11 @@ SLEEP_TIME="${SLEEP_TIME:-60s}"
 IGNORE_REFS_PATTERN="${IGNORE_REFS_PATTERN:-refs/pull}"
 
 # Add token to repo identifier
-if [ ! -z "${SRC_REPO_TOKEN}" ]; then
+if [ -n "${SRC_REPO_TOKEN}" ]; then
   SRC_REPO="$(add_token "${SRC_REPO}" "${SRC_REPO_TOKEN}")"
 fi
 
-if [ ! -z "${DST_REPO_TOKEN}" ]; then
+if [ -n "${DST_REPO_TOKEN}" ]; then
   DST_REPO="$(add_token "${DST_REPO}" "${DST_REPO_TOKEN}")"
 fi
 
