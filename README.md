@@ -38,6 +38,7 @@ For example replace `SRC_REPO_TOKEN` with `github-user:github-access-token`
 | `HTTP_TLS_VERIFY` | Enable/Disable certificate cheks | No, default: `true` | `true` or `false` |
 | `HTTP_SRC_PROXY` | HTTP Proxy to use when connecting to `SRC_REPO` | No, default: `` | `http://localhost:8080` |
 | `HTTP_DST_PROXY` | HTTP Proxy to use when connecting to `DST_REPO` | No, default: `` | `http://localhost:8080` |
+| `HTTP_ALLOW_TOKENS_INSECURE` | Allow authentication tokens over HTTP. **IMPORTANT**: This is very dangerous. Always use HTTPS! | No, default: `false` | `true` or `false` |
 | `ONCE` | If set to `true`, only mirror the repository once | No, default: `false` | `true` or `false` |
 | `SLEEP_TIME` | Time to sleep between synchronizations | No, default: `60s` | `30m` |
 | `IGNORE_REFS_PATTERN` | Don't mirror matching refs | No, default: `refs/pull` | `refs/pull` |
