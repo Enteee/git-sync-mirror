@@ -6,11 +6,15 @@ set -euo pipefail
 #
 
 #
-# Add http token to repository identifier (enforces https)
+# Add http token to repository identifier
 function add_token(){
   local url="${1}" && shift
   local token="${1}" && shift
-  echo "${url}" | sed -nre "s|^\s*https://(.+)|https://${token}@\1|ip"
+  if [ "${HTTP_ALLOW_TOKENS_INSECURE}" = true ]; then
+    echo "${url}" | sed -nre "s|^\s*http(s{0,1})://(.+)|http\1://${token}@\2|ip"
+  else
+    echo "${url}" | sed -nre "s|^\s*https://(.+)|https://${token}@\1|ip"
+  fi
 }
 
 #
@@ -88,6 +92,8 @@ ONCE="${ONCE:-false}"
 SLEEP_TIME="${SLEEP_TIME:-60s}"
 
 IGNORE_REFS_PATTERN="${IGNORE_REFS_PATTERN:-refs/pull}"
+
+HTTP_ALLOW_TOKENS_INSECURE="${HTTP_ALLOW_TOKENS_INSECURE-false}"
 
 # Add token to repo identifier
 if [ -n "${SRC_REPO_TOKEN}" ]; then
