@@ -1,13 +1,21 @@
 #!/usr/bin/env sh
+#
+# Globally disable some shellcheck options
+#
+#   Don't try to be POSIX compliant:
+#     - allow usage of 'local'
+#     - allow pipefail
+# shellcheck disable=2039
 set -euo pipefail
+
 
 #
 # Functions
 #
 
 #
-# Add http token to repository identifier
-function add_token(){
+# Add http token to repository identifier (enforces https)
+add_token(){
   local url="${1}" && shift
   local token="${1}" && shift
   if [ "${HTTP_ALLOW_TOKENS_INSECURE}" = true ]; then
@@ -19,7 +27,7 @@ function add_token(){
 
 #
 # Clone repostiory to local folder
-function clone_local_repo(){
+clone_local_repo(){
   local src_repo="${1}" && shift
   local local_repo="${1}" && shift
 
@@ -30,7 +38,7 @@ function clone_local_repo(){
 
 #
 # Mirror repository from local clone
-function mirror(){
+mirror(){
   local local_repo="${1}" && shift
   local dst_repo="${1}" && shift
 
