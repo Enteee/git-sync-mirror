@@ -1,27 +1,41 @@
-#!/usr/bin/env sh
-#
-# Globally disable some shellcheck options
-#
-#   Don't try to be POSIX compliant:
-#     - allow usage of 'local'
-#     - allow pipefail
-# shellcheck disable=2039
+#!/usr/bin/env bash
 set -euo pipefail
-
 
 #
 # Functions
 #
 
 #
+# Apply url encoding to first argument
+# from: https://stackoverflow.com/a/10660730/3215929
+rawurlencode(){
+  local string="${1}"
+  local strlen=${#string}
+  local encoded=""
+  local pos c o
+
+  for (( pos=0 ; pos<strlen ; pos++ )); do
+     c=${string:$pos:1}
+     case "$c" in
+        [-_.~a-zA-Z0-9] ) o="${c}" ;;
+        * )               printf -v o '%%%02x' "'$c"
+     esac
+     encoded+="${o}"
+  done
+  echo "${encoded}"
+}
+
+#
 # Add http token to repository identifier (enforces https)
 add_token(){
   local url="${1}" && shift
   local token="${1}" && shift
+  local token_url_encoded
+  token_url_encoded="$(rawurlencode "${token}")"
   if [ "${HTTP_ALLOW_TOKENS_INSECURE}" = true ]; then
-    echo "${url}" | sed -nre "s|^\s*http(s{0,1})://(.+)|http\1://${token}@\2|ip"
+    echo "${url}" | sed -nre "s|^\s*http(s{0,1})://(.+)|http\1://${token_url_encoded}@\2|ip"
   else
-    echo "${url}" | sed -nre "s|^\s*https://(.+)|https://${token}@\1|ip"
+    echo "${url}" | sed -nre "s|^\s*https://(.+)|https://${token_url_encoded}@\1|ip"
   fi
 }
 
@@ -79,7 +93,6 @@ mirror(){
 #
 # Environment
 #
-
 DEBUG="${DEBUG:-false}"
 if [ "${DEBUG}" = true ]; then set -x; fi
 
