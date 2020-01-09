@@ -44,4 +44,12 @@ For example replace `SRC_REPO_TOKEN` with `github-user:github-access-token`
 | `IGNORE_REFS_PATTERN` | Don't mirror matching refs | No, default: `refs/pull` | `refs/pull` |
 | `TLS_TOFU` | Enable / Disable [TLS-Trust On First Use] | No, default: `false` | `true` or `false` |
 
+Ignoring multiple refs is possible by separating them with space, but you also need to set MIRROR to false otherwise, sync will delete your branches. For example:
+
+```bash
+docker run \
+--env IGNORE_REFS_PATTERN='refs/pull refs/heads/feat/ refs/heads/feature/' \
+--env MIRROR=false
+```
+
 [TLS-Trust On First Use]:https://github.com/Enteee/tls-tofu
