@@ -42,7 +42,7 @@ function mirror(){
     # delete all hidden github pull request refs
     git for-each-ref \
       --format='delete %(refname)' \
-      ${IGNORE_REFS_PATTERN} \
+      "${IGNORE_REFS_PATTERN[@]}" \
     | git update-ref --stdin
 
     # do mirror
