@@ -6,6 +6,7 @@ ENV TLS_TOFU false
 RUN set -exuo pipefail \
   && apk add \
     git \
+    bash \
   && addgroup -g 1000 -S git \
   && adduser -u 1000 -S git -G git
 
