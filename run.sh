@@ -137,7 +137,7 @@ SRC_REPO_TOKEN="${SRC_REPO_TOKEN:-""}"
 DST_REPO="${DST_REPO?Missing destination repository}"
 DST_REPO_TOKEN="${DST_REPO_TOKEN:-""}"
 
-PRUNE="${PRUNE:-true}"
+PRUNE="${PRUNE:-false}"
 TWO_WAY="${TWO_WAY:-false}"
 
 HTTP_TLS_VERIFY="${HTTP_TLS_VERIFY:-true}"

@@ -33,7 +33,7 @@ For example replace `SRC_REPO_TOKEN` with `github-user:github-access-token`
 | `SRC_REPO_TOKEN` | Source repository token | No, default `` | `YourGithubUser:9a91fa018231aaffbbc1231.....` |
 | `DST_REPO_TOKEN` | Destination repository token | No, default `` | `YourGithubUser:9a91fa018231aaffbbc1231.....` |
 | `DEBUG` | Print debug output. **WARNING**: This will also print http tokens! | No, default: `false` | `true` or `false` |
-| `PRUNE` | Delete branches and tags on DST once they were deleted in SRC | No, default: `true` | `true` or `false` |
+| `PRUNE` | Delete branches and tags on DST once they were deleted in SRC | No, default: `false` | `true` or `false` |
 | `TWO_WAY` | Mirror both ways. First SRC to DST, then the other way around | No, default: `false` | `true` or `false` |
 | `HTTP_TLS_VERIFY` | Enable/Disable certificate cheks | No, default: `true` | `true` or `false` |
 | `HTTP_SRC_PROXY` | HTTP Proxy to use when connecting to `SRC_REPO` | No, default: `` | `http://localhost:8080` |
