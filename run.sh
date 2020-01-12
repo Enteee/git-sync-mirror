@@ -51,20 +51,6 @@ clone_local_repo(){
 }
 
 #
-# Mirror repository src -> dst
-mirror(){
-  local local_repo="${1}" && shift
-  local src_repo="${1}" && shift
-  local dst_repo="${1}" && shift
-
-  sync "${local_repo}" "${dst_repo}"
-
-  if [ "${PRUNE}" = true ]; then
-    prune "${local_repo}" "${src_repo}" "${dst_repo}"
-  fi
-}
-
-#
 # Synchonize refs from local clone to dst
 sync(){
   local local_repo="${1}" && shift
@@ -73,7 +59,8 @@ sync(){
   (
     cd "${local_repo}"
 
-    git remote update
+    git remote update \
+      --prune
 
     # delete all hidden github pull request refs
     git for-each-ref \
@@ -97,17 +84,12 @@ sync(){
 # Prune refs and forward branch deletion to dst
 prune(){
   local local_repo="${1}" && shift
-  local src_repo="${1}" && shift
   local dst_repo="${1}" && shift
 
   (
     cd "${local_repo}"
 
     git remote update
-
-    # Prune from dst
-    git remote prune \
-      "${dst_repo}"
 
     # Forward pruning from src to dst
     for ref in $(git remote prune --dry-run origin \
@@ -132,13 +114,14 @@ prune(){
       if [ "${local_hash}" = "${dst_hash}" ]; then
         git push \
           --delete \
-          "${dst_repo}" "${ref}"
+          "${dst_repo}" \
+          "${ref}"
       fi
     done
 
     # Finally, prune from src
     git remote prune \
-      "${src_repo}"
+      origin
   )
 }
 
@@ -190,10 +173,16 @@ clone_local_repo "${DST_REPO}" "${LOCAL_REPO_DST}"
 
 while true; do
 
-  mirror "${LOCAL_REPO_SRC}" "${SRC_REPO}" "${DST_REPO}"
+  if [ "${PRUNE}" = true ]; then
+    prune "${LOCAL_REPO_SRC}" "${DST_REPO}"
+    if [ "${TWO_WAY}" = true ]; then
+      prune "${LOCAL_REPO_DST}" "${SRC_REPO}"
+    fi
+  fi
 
+  sync "${LOCAL_REPO_SRC}" "${DST_REPO}"
   if [ "${TWO_WAY}" = true ]; then
-    mirror "${LOCAL_REPO_DST}" "${DST_REPO}" "${SRC_REPO}"
+    sync "${LOCAL_REPO_DST}" "${SRC_REPO}"
   fi
 
   if [ "${ONCE}" = true ]; then

@@ -4,7 +4,7 @@ _A simple synchronization container image for git repositories over HTTPS_
 *Features*:
 * Authentication with https tokens
 * Two way synchronization
-* Delete branches on destination when they were delted at the source (prune)
+* Delete branches on destination once they were delted at the source (prune)
 * Use a different HTTPS Proxy for source and destination
 * [TLS-Trust On First Use]: Seamlessly run this container behind a https scanning proxy
 * Skip certificate checks (don't do that)
