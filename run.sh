@@ -51,8 +51,22 @@ clone_local_repo(){
 }
 
 #
-# Mirror repository from local clone
+# Mirror repository src -> dst
 mirror(){
+  local local_repo="${1}" && shift
+  local src_repo="${1}" && shift
+  local dst_repo="${1}" && shift
+
+  sync "${local_repo}" "${dst_repo}"
+
+  if [ "${PRUNE}" = true ]; then
+    prune "${local_repo}" "${src_repo}" "${dst_repo}"
+  fi
+}
+
+#
+# Synchonize refs from local clone to dst
+sync(){
   local local_repo="${1}" && shift
   local dst_repo="${1}" && shift
 
@@ -67,26 +81,64 @@ mirror(){
       "${IGNORE_REFS_PATTERN[@]}" \
     | git update-ref --stdin
 
-    # do mirror
-    if [ "${MIRROR}" = true ]; then
+    git push \
+      --all \
+      "${dst_repo}" \
+    || [ "${TWO_WAY}" = true ]
+    git push \
+      --tags \
+      "${dst_repo}" \
+    || [ "${TWO_WAY}" = true ]
 
-      git push \
-        --mirror \
-        "${dst_repo}" \
-      || [ "${TWO_WAY}" = true ]
+  )
+}
 
-    else
+#
+# Prune refs and forward branch deletion to dst
+prune(){
+  local local_repo="${1}" && shift
+  local src_repo="${1}" && shift
+  local dst_repo="${1}" && shift
 
-      git push \
-        --all \
-        "${dst_repo}" \
-      || [ "${TWO_WAY}" = true ]
-      git push \
-        --tags \
-        "${dst_repo}" \
-      || [ "${TWO_WAY}" = true ]
+  (
+    cd "${local_repo}"
 
-    fi
+    git remote update
+
+    # Prune from dst
+    git remote prune \
+      "${dst_repo}"
+
+    # Forward pruning from src to dst
+    for ref in $(git remote prune --dry-run origin \
+      | sed -nre 's/\s+\*\s+\[would prune\]\s+refs\/(heads|tags)\/(.*)/\2/pg')
+    do
+      # Only forward pruning to dst if we have a matching ref for src and dst
+      local_hash="$(
+        git show-ref \
+          --hash \
+          --heads \
+          --tags \
+          "${ref}"
+      )"
+      dst_hash="$(
+        git ls-remote \
+          --heads \
+          --tags \
+          "${dst_repo}" \
+          "${ref}" \
+        | cut -f 1
+      )"
+      if [ "${local_hash}" = "${dst_hash}" ]; then
+        git push \
+          --delete \
+          "${dst_repo}" "${ref}"
+      fi
+    done
+
+    # Finally, prune from src
+    git remote prune \
+      "${src_repo}"
   )
 }
 
@@ -102,7 +154,7 @@ SRC_REPO_TOKEN="${SRC_REPO_TOKEN:-""}"
 DST_REPO="${DST_REPO?Missing destination repository}"
 DST_REPO_TOKEN="${DST_REPO_TOKEN:-""}"
 
-MIRROR="${MIRROR:-true}"
+PRUNE="${PRUNE:-true}"
 TWO_WAY="${TWO_WAY:-false}"
 
 HTTP_TLS_VERIFY="${HTTP_TLS_VERIFY:-true}"
@@ -138,9 +190,10 @@ clone_local_repo "${DST_REPO}" "${LOCAL_REPO_DST}"
 
 while true; do
 
-  mirror "${LOCAL_REPO_SRC}" "${DST_REPO}"
+  mirror "${LOCAL_REPO_SRC}" "${SRC_REPO}" "${DST_REPO}"
+
   if [ "${TWO_WAY}" = true ]; then
-    mirror "${LOCAL_REPO_DST}" "${SRC_REPO}"
+    mirror "${LOCAL_REPO_DST}" "${DST_REPO}" "${SRC_REPO}"
   fi
 
   if [ "${ONCE}" = true ]; then
