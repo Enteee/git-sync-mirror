@@ -15,8 +15,6 @@ ENV HOME=${APP_ROOT}
 COPY bin/ ${APP_ROOT}/bin/
 
 RUN set -exuo pipefail \
-  && addgroup -g 1000080001 -S git \
-  && adduser -u 1000080001 -S git -G git \
   && chmod -R u+x ${APP_ROOT}/bin \
   && chgrp -R 0 ${APP_ROOT} \
   && chmod -R g=u ${APP_ROOT} /etc/passwd
