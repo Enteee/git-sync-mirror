@@ -125,6 +125,13 @@ if [ -n "${DST_REPO_TOKEN}" ]; then
   DST_REPO="$(add_token "${DST_REPO}" "${DST_REPO_TOKEN}")"
 fi
 
+# Create user in /etc/passwd
+if ! whoami &> /dev/null; then
+  if [ -w /etc/passwd ]; then
+    echo "${USER_NAME:-default}:x:$(id -u):0:${USER_NAME:-default} user:${HOME}:/sbin/nologin" >> /etc/passwd
+  fi
+fi
+
 # Create local repositories
 LOCAL_REPO_SRC="$(mktemp -d)"
 LOCAL_REPO_DST="$(mktemp -d)"
