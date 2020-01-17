@@ -30,8 +30,10 @@ For example replace `SRC_REPO_TOKEN` with `github-user:github-access-token`
 | -------- | ----------- | :-------: | ------- |
 | `SRC_REPO` | Source repository | Yes | `https://github.com/Enteee/git-sync-mirror.git` |
 | `DST_REPO` | Destination repository | Yes | `https://github.com/Enteee/git-sync-mirror.git` |
-| `SRC_REPO_TOKEN` | Source repository token | No, default `` | `YourGithubUser:9a91fa018231aaffbbc1231.....` |
-| `DST_REPO_TOKEN` | Destination repository token | No, default `` | `YourGithubUser:9a91fa018231aaffbbc1231.....` |
+| `SRC_REPO_TOKEN` | Source repository token | No, default `` | `9a91fa018231aaffbbc1231.....` |
+| `DST_REPO_TOKEN` | Destination repository token | No, default `` | `9a91fa018231aaffbbc1231.....` |
+| `SRC_REPO_TOKEN_USER` | Source repository token user | No, default `` | `YourGithubUser` |
+| `DST_REPO_TOKEN_USER` | Destination repository token user | No, default `` | `YourGithubUser` |
 | `DEBUG` | Print debug output. **WARNING**: This will also print http tokens! | No, default: `false` | `true` or `false` |
 | `MIRROR` | Mirror all refs not just tags and branches | No, default: `true` | `true` or `false` |
 | `TWO_WAY` | Mirror both ways. First SRC to DST, then the other way around | No, default: `false` | `true` or `false` |
