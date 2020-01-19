@@ -30,12 +30,22 @@ rawurlencode(){
 add_token(){
   local url="${1}" && shift
   local token="${1}" && shift
-  local token_url_encoded
+  local token_user="${1:-false}" && ( shift || true )
+
+  local token_final=""
+
   token_url_encoded="$(rawurlencode "${token}")"
+
+  # assemble token
+  if [ "${token_user}" != false ]; then
+    token_final+="$(rawurlencode "${token_user}"):"
+  fi
+  token_final+="${token_url_encoded}"
+
   if [ "${HTTP_ALLOW_TOKENS_INSECURE}" = true ]; then
-    echo "${url}" | sed -nre "s|^\s*http(s{0,1})://(.+)|http\1://${token_url_encoded}@\2|ip"
+    echo "${url}" | sed -nre "s|^\s*http(s{0,1})://(.+)|http\1://${token_final}@\2|ip"
   else
-    echo "${url}" | sed -nre "s|^\s*https://(.+)|https://${token_url_encoded}@\1|ip"
+    echo "${url}" | sed -nre "s|^\s*https://(.+)|https://${token_final}@\1|ip"
   fi
 }
 
@@ -133,9 +143,11 @@ if [ "${DEBUG}" = true ]; then set -x; fi
 
 SRC_REPO="${SRC_REPO?Missing source repository}"
 SRC_REPO_TOKEN="${SRC_REPO_TOKEN:-""}"
+SRC_REPO_TOKEN_USER="${SRC_REPO_TOKEN_USER:-""}"
 
 DST_REPO="${DST_REPO?Missing destination repository}"
 DST_REPO_TOKEN="${DST_REPO_TOKEN:-""}"
+DST_REPO_TOKEN_USER="${DST_REPO_TOKEN_USER:-""}"
 
 PRUNE="${PRUNE:-false}"
 TWO_WAY="${TWO_WAY:-false}"
@@ -153,11 +165,18 @@ HTTP_ALLOW_TOKENS_INSECURE="${HTTP_ALLOW_TOKENS_INSECURE-false}"
 
 # Add token to repo identifier
 if [ -n "${SRC_REPO_TOKEN}" ]; then
-  SRC_REPO="$(add_token "${SRC_REPO}" "${SRC_REPO_TOKEN}")"
+  SRC_REPO="$(add_token "${SRC_REPO}" "${SRC_REPO_TOKEN}" "${SRC_REPO_TOKEN_USER}")"
 fi
 
 if [ -n "${DST_REPO_TOKEN}" ]; then
-  DST_REPO="$(add_token "${DST_REPO}" "${DST_REPO_TOKEN}")"
+  DST_REPO="$(add_token "${DST_REPO}" "${DST_REPO_TOKEN}" "${DST_REPO_TOKEN_USER}")"
+fi
+
+# Create user in /etc/passwd
+if ! whoami &> /dev/null; then
+  if [ -w /etc/passwd ]; then
+    echo "${USER_NAME:-default}:x:$(id -u):0:${USER_NAME:-default} user:${HOME}:/sbin/nologin" >> /etc/passwd
+  fi
 fi
 
 # Create local repositories
