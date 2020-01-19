@@ -1,5 +1,5 @@
 # git-sync-mirror
-_A simple synchronization container image for git repositories over HTTPS_
+_A container image for synchronizing git repositories over HTTPS_
 
 *Features*:
 * Authentication with https tokens
