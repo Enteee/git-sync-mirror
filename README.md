@@ -22,7 +22,7 @@ $ docker run \
 ```
 
 *Note*: The container is designed for synchronization over `https` with supported authentication using access tokens.
-For example replace `SRC_REPO_TOKEN` with `github-user:github-access-token`
+For example replace `SRC_REPO_TOKEN` with your [GitHub Access token](https://help.github.com/en/github/authenticating-to-github/creating-a-personal-access-token-for-the-command-line) and `SRC_REPO_TOKEN_USER` with your GitHub user name.
 
 ## Environment Variables
 
