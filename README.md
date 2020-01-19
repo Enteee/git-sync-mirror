@@ -43,7 +43,7 @@ For example replace `SRC_REPO_TOKEN` with `github-user:github-access-token`
 | `HTTP_ALLOW_TOKENS_INSECURE` | Allow authentication tokens over HTTP. **IMPORTANT**: This is very dangerous. Always use HTTPS! | No, default: `false` | `true` or `false` |
 | `ONCE` | If set to `true`, only mirror the repository once | No, default: `false` | `true` or `false` |
 | `SLEEP_TIME` | Time to sleep between synchronizations | No, default: `60s` | `30m` |
-| `IGNORE_REFS_PATTERN` | Don't mirror matching refs | No, default: `refs/pull` | `refs/pull` |
+| `IGNORE_REFS_PATTERN` | Don't mirror matching refs. Ignoring multiple refs is possible by separating them with spaces. | No, default: `refs/pull` | `refs/pull` |
 | `TLS_TOFU` | Enable / Disable [TLS-Trust On First Use] | No, default: `false` | `true` or `false` |
 
 [TLS-Trust On First Use]:https://github.com/Enteee/tls-tofu
