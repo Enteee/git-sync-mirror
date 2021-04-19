@@ -1,4 +1,5 @@
-# git-sync-mirror
+# git-sync-mirror [![GitHub Workflow Status (branch)](https://img.shields.io/github/workflow/status/Enteee/git-sync-mirror/Build/master)](https://github.com/Enteee/git-sync-mirror) [![Docker Pulls](https://img.shields.io/docker/pulls/enteee/git-sync-mirror)](https://hub.docker.com/r/enteee/git-sync-mirror)
+
 _A container image for synchronizing git repositories over HTTPS_
 
 *Features*:
