@@ -1,4 +1,4 @@
-FROM enteee/tls-tofu:alpine-latest
+FROM enteee/tls-tofu:v1.0.0
 
 # Disable TLS-TOFU by default
 ENV TLS_TOFU=false
