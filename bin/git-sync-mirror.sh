@@ -183,7 +183,7 @@ fi
 LOCAL_REPO_SRC="${LOCAL_REPO_SRC:-"$(mktemp -d)"}"
 LOCAL_REPO_DST="${LOCAL_REPO_DST:-"$(mktemp -d)"}"
 
-if [ -z "$(ls -A ${LOCAL_REPO_SRC})" ]; then
+if [ ! -d "${LOCAL_REPO_SRC}/.git" ]; then
      clone_local_repo "${SRC_REPO}" "${LOCAL_REPO_SRC}"
 fi
 
