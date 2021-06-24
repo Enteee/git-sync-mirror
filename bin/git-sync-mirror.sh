@@ -187,7 +187,7 @@ if [ ! -d "${LOCAL_REPO_SRC}/.git" ]; then
      clone_local_repo "${SRC_REPO}" "${LOCAL_REPO_SRC}"
 fi
 
-if [ -z "$(ls -A ${LOCAL_REPO_DST})" ]; then
+if [ ! -d "${LOCAL_REPO_DST}/.git" ]; then
      clone_local_repo "${DST_REPO}" "${LOCAL_REPO_DST}"
 fi
 
