@@ -180,15 +180,21 @@ if ! whoami &> /dev/null; then
 fi
 
 # Create local repositories
-LOCAL_REPO_SRC="$(mktemp -d)"
-LOCAL_REPO_DST="$(mktemp -d)"
+LOCAL_REPO_SRC="${LOCAL_REPO_SRC:-"$(mktemp -d)"}"
+LOCAL_REPO_DST="${LOCAL_REPO_DST:-"$(mktemp -d)"}"
 
 git config --global "http.sslVerify" "${HTTP_TLS_VERIFY}"
 git config --global "http.${SRC_REPO}.proxy" "${HTTP_SRC_PROXY}"
 git config --global "http.${DST_REPO}.proxy" "${HTTP_DST_PROXY}"
 
-clone_local_repo "${SRC_REPO}" "${LOCAL_REPO_SRC}"
-clone_local_repo "${DST_REPO}" "${LOCAL_REPO_DST}"
+if [ ! -d "${LOCAL_REPO_SRC}/.git" ]; then
+     clone_local_repo "${SRC_REPO}" "${LOCAL_REPO_SRC}"
+fi
+
+if [ ! -d "${LOCAL_REPO_DST}/.git" ]; then
+     clone_local_repo "${DST_REPO}" "${LOCAL_REPO_DST}"
+fi
+
 
 while true; do
 

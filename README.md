@@ -31,6 +31,8 @@ For example replace `SRC_REPO_TOKEN` with your [GitHub Access token](https://hel
 | -------- | ----------- | :-------: | ------- |
 | `SRC_REPO` | Source repository | Yes | `https://github.com/Enteee/git-sync-mirror.git` |
 | `DST_REPO` | Destination repository | Yes | `https://github.com/Enteee/git-sync-mirror.git` |
+| `LOCAL_REPO_SRC` | Local source repository | No, default: Temporary directory | `ExampleProject/FilePath` |
+| `LOCAL_REPO_DST` | Local destination repository | No, default: Temporary directory | `ExampleProject/FilePath` |
 | `SRC_REPO_TOKEN` | Source repository token | No, default `` | `9a91fa018231aaffbbc1231.....` |
 | `DST_REPO_TOKEN` | Destination repository token | No, default `` | `9a91fa018231aaffbbc1231.....` |
 | `SRC_REPO_TOKEN_USER` | Source repository token user | No, default `` | `YourGithubUser` |
