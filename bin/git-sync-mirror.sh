@@ -187,11 +187,11 @@ git config --global "http.sslVerify" "${HTTP_TLS_VERIFY}"
 git config --global "http.${SRC_REPO}.proxy" "${HTTP_SRC_PROXY}"
 git config --global "http.${DST_REPO}.proxy" "${HTTP_DST_PROXY}"
 
-if [ ! -d "${LOCAL_REPO_SRC}/.git" ]; then
+if ! git -C "${LOCAL_REPO_SRC}" rev-parse --git-dir &>/dev/null; then
      clone_local_repo "${SRC_REPO}" "${LOCAL_REPO_SRC}"
 fi
 
-if [ ! -d "${LOCAL_REPO_DST}/.git" ]; then
+if ! git -C "${LOCAL_REPO_DST}" rev-parse --git-dir &>/dev/null; then
      clone_local_repo "${DST_REPO}" "${LOCAL_REPO_DST}"
 fi
 
