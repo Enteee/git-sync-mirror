@@ -180,34 +180,34 @@ if ! whoami &> /dev/null; then
 fi
 
 # Create local repositories
-LOCAL_REPO_SRC="${LOCAL_REPO_SRC:-"$(mktemp -d)"}"
-LOCAL_REPO_DST="${LOCAL_REPO_DST:-"$(mktemp -d)"}"
+SRC_LOCAL_REPO="${SRC_LOCAL_REPO:-"$(mktemp -d)"}"
+DST_LOCAL_REPO="${DST_LOCAL_REPO:-"$(mktemp -d)"}"
 
 git config --global "http.sslVerify" "${HTTP_TLS_VERIFY}"
 git config --global "http.${SRC_REPO}.proxy" "${HTTP_SRC_PROXY}"
 git config --global "http.${DST_REPO}.proxy" "${HTTP_DST_PROXY}"
 
-if ! git -C "${LOCAL_REPO_SRC}" rev-parse --git-dir &>/dev/null; then
-     clone_local_repo "${SRC_REPO}" "${LOCAL_REPO_SRC}"
+if ! git -C "${SRC_LOCAL_REPO}" rev-parse --git-dir &>/dev/null; then
+     clone_local_repo "${SRC_REPO}" "${SRC_LOCAL_REPO}"
 fi
 
-if ! git -C "${LOCAL_REPO_DST}" rev-parse --git-dir &>/dev/null; then
-     clone_local_repo "${DST_REPO}" "${LOCAL_REPO_DST}"
+if ! git -C "${DST_LOCAL_REPO}" rev-parse --git-dir &>/dev/null; then
+     clone_local_repo "${DST_REPO}" "${DST_LOCAL_REPO}"
 fi
 
 
 while true; do
 
   if [ "${PRUNE}" = true ]; then
-    prune "${LOCAL_REPO_SRC}" "${DST_REPO}"
+    prune "${SRC_LOCAL_REPO}" "${DST_REPO}"
     if [ "${TWO_WAY}" = true ]; then
-      prune "${LOCAL_REPO_DST}" "${SRC_REPO}"
+      prune "${DST_LOCAL_REPO}" "${SRC_REPO}"
     fi
   fi
 
-  sync "${LOCAL_REPO_SRC}" "${DST_REPO}"
+  sync "${SRC_LOCAL_REPO}" "${DST_REPO}"
   if [ "${TWO_WAY}" = true ]; then
-    sync "${LOCAL_REPO_DST}" "${SRC_REPO}"
+    sync "${DST_LOCAL_REPO}" "${SRC_REPO}"
   fi
 
   if [ "${ONCE}" = true ]; then
