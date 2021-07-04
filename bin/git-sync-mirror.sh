@@ -187,11 +187,13 @@ git config --global "http.sslVerify" "${HTTP_TLS_VERIFY}"
 git config --global "http.${SRC_REPO}.proxy" "${HTTP_SRC_PROXY}"
 git config --global "http.${DST_REPO}.proxy" "${HTTP_DST_PROXY}"
 
-if [ "$(git -C "${SRC_LOCAL_REPO}" rev-parse --git-dir 2>/dev/null)" != ".git" ]; then
+# Note we clone with --mirror, hence we expect a "." and not ".git" here
+if [ "$(git -C "${SRC_LOCAL_REPO}" rev-parse --git-dir 2>/dev/null)" != "." ]; then
      clone_local_repo "${SRC_REPO}" "${SRC_LOCAL_REPO}"
 fi
 
-if [ "$(git -C "${DST_LOCAL_REPO}" rev-parse --git-dir 2>/dev/null)" != ".git" ]; then
+# Note we clone with --mirror, hence we expect a "." and NOT ".git" here
+if [ "$(git -C "${DST_LOCAL_REPO}" rev-parse --git-dir 2>/dev/null)" != "." ]; then
      clone_local_repo "${DST_REPO}" "${DST_LOCAL_REPO}"
 fi
 
