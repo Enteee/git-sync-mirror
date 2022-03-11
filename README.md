@@ -40,6 +40,7 @@ For example replace `SRC_REPO_TOKEN` with your [GitHub Access token](https://hel
 | `DEBUG` | Print debug output. **WARNING**: This will also print http tokens! | No, default: `false` | `true` or `false` |
 | `PRUNE` | Delete branches and tags on DST once they were deleted in SRC | No, default: `false` | `true` or `false` |
 | `TWO_WAY` | Mirror both ways. First SRC to DST, then the other way around | No, default: `false` | `true` or `false` |
+| `GIT_FORCE_PUSH` | Pushes with git option --force. This makes sense when you sometimes use force push in your git workflow | No, default: `false` | `true` or `false` |
 | `HTTP_TLS_VERIFY` | Enable/Disable certificate cheks | No, default: `true` | `true` or `false` |
 | `HTTP_SRC_PROXY` | HTTP Proxy to use when connecting to `SRC_REPO` | No, default: `` | `http://localhost:8080` |
 | `HTTP_DST_PROXY` | HTTP Proxy to use when connecting to `DST_REPO` | No, default: `` | `http://localhost:8080` |

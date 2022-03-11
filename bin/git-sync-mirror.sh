@@ -80,6 +80,7 @@ sync(){
 
     git push \
       --all \
+      $([ "${GIT_FORCE_PUSH}" = true ] && echo "--force") \
       "${dst_repo}" \
     || [ "${TWO_WAY}" = true ]
     git push \
@@ -151,6 +152,7 @@ DST_REPO_TOKEN_USER="${DST_REPO_TOKEN_USER:-""}"
 
 PRUNE="${PRUNE:-false}"
 TWO_WAY="${TWO_WAY:-false}"
+GIT_FORCE_PUSH="${GIT_FORCE_PUSH:-false}"
 
 HTTP_TLS_VERIFY="${HTTP_TLS_VERIFY:-true}"
 HTTP_SRC_PROXY="${HTTP_SRC_PROXY:-""}"
