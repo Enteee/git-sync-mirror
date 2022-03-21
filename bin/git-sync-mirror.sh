@@ -85,6 +85,7 @@ sync(){
     || [ "${TWO_WAY}" = true ]
     git push \
       --tags \
+      $([ "${GIT_FORCE_PUSH}" = true ] && echo "--force") \
       "${dst_repo}" \
     || [ "${TWO_WAY}" = true ]
 
