@@ -1,0 +1,97 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "git-mirroring.fullname" . }}
+  labels:
+    {{- include "git-mirroring.labels" . | nindent 4 }}
+spec:
+  selector:
+    matchLabels:
+      {{- include "git-mirroring.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      {{- with .Values.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "git-mirroring.selectorLabels" . | nindent 8 }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "git-mirroring.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      containers:
+        - name: {{ .Chart.Name }}
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default (printf "v%s" .Chart.AppVersion) }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+          env:
+            - name: "SRC_REPO"
+              value: {{ required "URL of the source repository must be configured." .Values.repositories.sourceRepository.gitHttpsUrl | quote }}
+            - name: "SRC_REPO_TOKEN"
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "git-mirroring.fullname" . }}
+                  key: SRC_REPO_TOKEN
+            - name: "SRC_REPO_TOKEN_USER"
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "git-mirroring.fullname" . }}
+                  key: SRC_REPO_TOKEN_USER
+            {{- if .Values.repositories.sourceRepository.httpProxy }}
+            - name: HTTP_SRC_PROXY
+              value: {{ .Values.repositories.sourceRepository.httpProxy | quote }}
+            {{- end }}
+            - name: "DST_REPO"
+              value: {{ required "URL of the destination repository must be configured." .Values.repositories.destinationRepository.gitHttpsUrl | quote }}
+            - name: "DST_REPO_TOKEN"
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "git-mirroring.fullname" . }}
+                  key: DST_REPO_TOKEN
+            - name: "DST_REPO_TOKEN_USER"
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "git-mirroring.fullname" . }}
+                  key: DST_REPO_TOKEN_USER
+            {{- if .Values.repositories.destinationRepository.httpProxy }}
+            - name: "HTTP_SRC_PROXY"
+              value: {{ .Values.repositories.destinationRepository.httpProxy | quote }}
+            {{- end }}
+            - name: "DEBUG"
+              value: {{ .Values.synchronization.debug | quote }}
+            - name: "TWO_WAY"
+              value: {{ .Values.synchronization.twoWay | quote }}
+            - name: "GIT_FORCE_PUSH"
+              value: {{ .Values.synchronization.gitForcePush | quote }}
+            - name: "HTTP_TLS_VERIFY"
+              value: {{ .Values.synchronization.httpTlsVerify | quote }}
+            - name: "HTTP_ALLOW_TOKENS_INSECURE"
+              value: {{ .Values.synchronization.httpAllowTokensInsecure | quote }}
+            - name: "ONCE"
+              value: {{ .Values.synchronization.once | quote }}
+            - name: "SLEEP_TIME"
+              value: {{ .Values.synchronization.sleepTime | quote }}
+            - name: "IGNORE_REFS_PATTERN"
+              value: {{ .Values.synchronization.ignoreRefsPattern | quote }}
+            - name: "TLS_TOFU"
+              value: {{ .Values.synchronization.tlsTofu | quote }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
